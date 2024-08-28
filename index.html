@@ -8,16 +8,14 @@
 </head>
 <body>
     <header class="header">
-            <img class="header__logo" src="./assets/Logo.png">
+        <img class="header__logo" src="./assets/Logo.png" alt="Logo">
     </header>
     <main class="presentacion">
         <section class="presentacion__encriptar">
             <div class="distribucion">
-                
-                <input type="text" id="texto" placeholder="Ingrese el texto aqui" class="presentacion__encriptar__texto">
-
+                <input type="text" id="texto" placeholder="Ingrese el texto aquí" class="presentacion__encriptar__texto">
             </div>
-            <p class="presentacion__encriptar__texto__1"><img src="./assets/excla.png"> Solo letras minúsculas y sin acentos</p>
+            <p class="presentacion__encriptar__texto__1"><img src="./assets/excla.png" alt="Advertencia"> Solo letras minúsculas y sin acentos, sin signos de puntuación</p>
             <div class="presentacion__encriptar__boton_encriptar">
                 <button onclick="encriptarTexto()" class="boton__encriptar">Encriptar</button>
                 <button onclick="desencriptar()" class="boton__desencriptar">Desencriptar</button>
@@ -25,20 +23,116 @@
         </section>
         <section class="presentacion__desencriptar">
             <div class="division__texto__desencriptar">
-            <p class="presentacion__desencriptar__texto__usuario" type="text" id="texto2" name="nombre2"></p>
+                <p class="presentacion__desencriptar__texto__usuario" id="texto2"></p>
             </div>
             <img class="munecoPng" src="./assets/Muñeco.png" alt="Imagen de no se encuentra texto">
             <div class="presentacion__desencriptar__texto">
-            <p class="texto__no__encontrado">Ningún mensaje fue encontrado</p>
-            <p class="ingresa__texto__encriptar">Ingresa el texto que desees encriptar o desencriptar.</p>
-            <button onclick="copiar()" class="boton__copiar">Copiar</button>
-            
+                <p class="texto__no__encontrado">Ningún mensaje fue encontrado</p>
+                <p class="ingresa__texto__encriptar">Ingresa el texto que desees encriptar o desencriptar.</p>
+                <button onclick="copiar()" class="boton__copiar">Copiar</button>
             </div>
         </section>
     </main>
     <footer>
         <p class="footer">Realizado por Harrison Sarmiento Alura Latam</p>
     </footer>
-    <script src="app.js"></script>
+    <script>
+        function eliminarAcentos(texto) {
+            const acentos = {
+                'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+                'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+                'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
+                'À': 'A', 'È': 'E', 'Ì': 'I', 'Ò': 'O', 'Ù': 'U',
+                'â': 'a', 'ê': 'e', 'î': 'i', 'ô': 'o', 'û': 'u',
+                'Â': 'A', 'Ê': 'E', 'Î': 'I', 'Ô': 'O', 'Û': 'U',
+                'ã': 'a', 'õ': 'o', 'ñ': 'n',
+                'Ã': 'A', 'Õ': 'O', 'Ñ': 'N'
+            };
+            return texto.split('').map(char => acentos[char] || char).join('');
+        }
+
+        function soloMinusculasYSinAcentos(texto) {
+            return texto.toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Elimina acentos
+                .replace(/[^a-z\s]/g, ""); // Elimina signos de puntuación, mantiene letras y espacios
+        }
+
+        function validarTexto() {
+            const textarea = document.getElementById('texto');
+            let texto = textarea.value;
+            texto = soloMinusculasYSinAcentos(texto);
+            textarea.value = texto;
+        }
+
+        document.getElementById('texto').addEventListener('input', validarTexto);
+
+        function encriptar(cambioPalabra) {
+            switch (cambioPalabra) {
+                case 'a':
+                    return 'ai';
+                case 'e':
+                    return 'enter';
+                case 'i':
+                    return 'imes';
+                case 'o':
+                    return 'ober';
+                case 'u':
+                    return 'ufat';
+                default:
+                    return cambioPalabra;
+            }
+        }
+
+        function desencriptar() {
+            let textoEncriptado = document.getElementById('texto').value;
+
+            textoEncriptado = textoEncriptado.replace(/ai/g, 'a');
+            textoEncriptado = textoEncriptado.replace(/enter/g, 'e');
+            textoEncriptado = textoEncriptado.replace(/imes/g, 'i');
+            textoEncriptado = textoEncriptado.replace(/ober/g, 'o');
+            textoEncriptado = textoEncriptado.replace(/ufat/g, 'u');
+
+            document.getElementById('texto2').textContent = textoEncriptado;
+        }
+
+        function encriptarTexto() {
+            let textoNormal = document.getElementById('texto').value;
+            let textoEncriptado = textoNormal.replace(/[aeiou]/gi, encriptar);
+            document.getElementById('texto2').textContent = textoEncriptado;
+            mostrarBotonCopiar();
+            ocultarEtiqueta();
+        }
+
+        function ocultarEtiqueta() {
+            const etiquetas = [
+                '.munecoPng',
+                '.texto__no__encontrado',
+                '.ingresa__texto__encriptar'
+            ];
+
+            etiquetas.forEach(selector => {
+                const elemento = document.querySelector(selector);
+                if (elemento) {
+                    elemento.style.display = 'none';
+                }
+            });
+        }
+
+        function mostrarBotonCopiar() {
+            const boton = document.querySelector('.boton__copiar');
+            if (boton) {
+                boton.style.display = 'block';
+            }
+        }
+
+        function copiar() {
+            const elemento = document.querySelector('.presentacion__desencriptar__texto__usuario');
+            if (elemento) {
+                const textoCopiado = elemento.textContent || elemento.innerText;
+                navigator.clipboard.writeText(textoCopiado);
+            }
+        }
+    </script>
 </body>
 </html>
