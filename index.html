@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es-co">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador de texto</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header class="header">
+            <img class="header__logo" src="./assets/Logo.png">
+    </header>
+    <main class="presentacion">
+        <section class="presentacion__encriptar">
+            <div class="distribucion">
+                
+                <input type="text" id="texto" placeholder="Ingrese el texto aqui" class="presentacion__encriptar__texto">
+
+            </div>
+            <p class="presentacion__encriptar__texto__1"><img src="./assets/excla.png"> Solo letras minúsculas y sin acentos</p>
+            <div class="presentacion__encriptar__boton_encriptar">
+                <button onclick="encriptarTexto()" class="boton__encriptar">Encriptar</button>
+                <button onclick="desencriptar()" class="boton__desencriptar">Desencriptar</button>
+            </div>
+        </section>
+        <section class="presentacion__desencriptar">
+            <div class="division__texto__desencriptar">
+            <p class="presentacion__desencriptar__texto__usuario" type="text" id="texto2" name="nombre2"></p>
+            </div>
+            <img class="munecoPng" src="./assets/Muñeco.png" alt="Imagen de no se encuentra texto">
+            <div class="presentacion__desencriptar__texto">
+            <p class="texto__no__encontrado">Ningún mensaje fue encontrado</p>
+            <p class="ingresa__texto__encriptar">Ingresa el texto que desees encriptar o desencriptar.</p>
+            <button onclick="copiar()" class="boton__copiar">Copiar</button>
+            
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p class="footer">Realizado por Harrison Sarmiento Alura Latam</p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
